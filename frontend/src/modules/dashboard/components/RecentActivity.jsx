@@ -1,6 +1,9 @@
+import { useNavigate } from 'react-router-dom'
 import { recentActivities } from '../data/dashboardData'
 
 export default function RecentActivity() {
+  const navigate = useNavigate()
+
   return (
     <section className="panel-card recent-activity-panel">
       <div className="panel-heading">
@@ -12,7 +15,7 @@ export default function RecentActivity() {
         <button
           type="button"
           className="text-action"
-          onClick={() => window.alert('گزارش فعالیت در فاز مربوطه تکمیل می‌شود.')}
+          onClick={() => navigate('/activity')}
         >
           مشاهده همه
         </button>

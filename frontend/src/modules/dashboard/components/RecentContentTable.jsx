@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom'
 import { recentContent } from '../data/dashboardData'
 
 function StatusBadge({ status }) {
@@ -16,6 +17,8 @@ function StatusBadge({ status }) {
 }
 
 export default function RecentContentTable() {
+  const navigate = useNavigate()
+
   return (
     <section className="panel-card content-table-panel">
       <div className="panel-heading">
@@ -27,7 +30,7 @@ export default function RecentContentTable() {
         <button
           type="button"
           className="outline-button"
-          onClick={() => window.alert('مدیریت مطالب در ماژول محتوا توسعه داده می‌شود.')}
+          onClick={() => navigate('/content')}
         >
           مشاهده همه مطالب
           <i className="bi bi-arrow-up-left" />

@@ -1,10 +1,14 @@
+import { lazy, Suspense } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { stats } from '../data/dashboardData'
 import StatCard from '../components/StatCard'
-import ActivityChart from '../components/ActivityChart'
+const ActivityChart = lazy(() => import('../components/ActivityChart'))
 import RecentActivity from '../components/RecentActivity'
 import RecentContentTable from '../components/RecentContentTable'
 
 export default function DashboardPage() {
+  const navigate = useNavigate()
+
   return (
     <div className="dashboard-page">
       <div className="page-intro">
@@ -16,7 +20,7 @@ export default function DashboardPage() {
         <button
           type="button"
           className="primary-button"
-          onClick={() => window.alert('فرم ایجاد مطلب در ماژول محتوا پیاده‌سازی خواهد شد.')}
+          onClick={() => navigate('/content')}
         >
           <i className="bi bi-plus-lg" />
           ایجاد مطلب جدید
@@ -30,7 +34,15 @@ export default function DashboardPage() {
       </div>
 
       <div className="dashboard-main-grid">
-        <ActivityChart />
+        <Suspense
+          fallback={
+            <section className="panel-card chart-loading" role="status" aria-live="polite">
+              در حال بارگذاری نمودار...
+            </section>
+          }
+        >
+          <ActivityChart />
+        </Suspense>
         <RecentActivity />
       </div>
 
