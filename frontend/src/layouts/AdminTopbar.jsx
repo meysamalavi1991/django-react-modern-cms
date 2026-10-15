@@ -1,4 +1,6 @@
-import { useLocation } from 'react-router-dom'
+import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { useAuth } from '../core/auth/useAuth'
 
 const pageTitles = {
   '/': 'پیشخوان',
@@ -6,14 +8,41 @@ const pageTitles = {
   '/categories': 'دسته‌بندی‌ها',
   '/media': 'کتابخانه رسانه',
   '/users': 'مدیریت کاربران',
+  '/users/details': 'جزئیات کاربر',
   '/roles': 'نقش‌ها و دسترسی‌ها',
+  '/positions': 'سمت‌ها',
   '/activity': 'گزارش فعالیت',
   '/settings': 'تنظیمات سیستم',
 }
 
 export default function AdminTopbar({ onToggleSidebar, onOpenMobileSidebar }) {
   const { pathname } = useLocation()
+  const navigate = useNavigate()
+  const { user, logout } = useAuth()
+  const [loggingOut, setLoggingOut] = useState(false)
+
   const title = pageTitles[pathname] ?? 'بخش مدیریت'
+  const displayName =
+    [user?.first_name, user?.last_name].filter(Boolean).join(' ') ||
+    user?.username ||
+    'کاربر'
+
+  const avatarLetter = displayName.trim().charAt(0) || 'ک'
+
+  async function handleLogout() {
+    if (loggingOut) return
+
+    setLoggingOut(true)
+
+    try {
+      await logout()
+    } catch {
+      // نشست محلی در AuthProvider پاک می‌شود؛ خطای شبکه مانع خروج نمی‌شود.
+    } finally {
+      navigate('/login', { replace: true })
+      setLoggingOut(false)
+    }
+  }
 
   return (
     <header className="admin-topbar">
@@ -62,14 +91,23 @@ export default function AdminTopbar({ onToggleSidebar, onOpenMobileSidebar }) {
 
         <div className="topbar-divider" />
 
-        <button type="button" className="profile-button">
-          <div className="profile-avatar">م</div>
+        <div className="profile-button">
+          <div className="profile-avatar">{avatarLetter}</div>
           <div className="profile-copy">
-            <strong>مدیر سیستم</strong>
-            <span>مدیر کل</span>
+            <strong>{displayName}</strong>
+            <span>{user?.is_superuser ? 'مدیر کل' : user?.is_staff ? 'مدیر سیستم' : 'کاربر'}</span>
           </div>
-          <i className="bi bi-chevron-down profile-chevron" />
-        </button>
+          <button
+            type="button"
+            className="icon-button"
+            onClick={handleLogout}
+            disabled={loggingOut}
+            aria-label="خروج از حساب"
+            title="خروج از حساب"
+          >
+            <i className={`bi ${loggingOut ? 'bi-hourglass-split' : 'bi-box-arrow-left'}`} />
+          </button>
+        </div>
       </div>
     </header>
   )
