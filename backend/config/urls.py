@@ -30,4 +30,8 @@ urlpatterns = [
     # Versioned API v1
     path("api/v1/auth/", include("apps.authentication.urls")),
     path("api/v1/users/", include("apps.users.urls")),
+
+    path("api/v1/media/", include("apps.media.urls")),
+
+    path("api/v1/content/", include("apps.content.urls")),
 ]

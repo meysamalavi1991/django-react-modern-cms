@@ -48,7 +48,10 @@ INSTALLED_APPS = [
     "apps.core.apps.CoreConfig",
     "apps.users.apps.UsersConfig",
     "apps.authentication.apps.AuthenticationConfig",
-    "apps.roles.apps.RolesConfig"
+    "apps.roles.apps.RolesConfig",
+    "apps.media.apps.MediaConfig",
+    "apps.content.apps.ContentConfig",
+
 ]
 
 MIDDLEWARE = [
@@ -153,6 +156,8 @@ REST_FRAMEWORK = {
         "rest_framework.permissions.IsAuthenticated",
     ),
     "EXCEPTION_HANDLER": "apps.core.exceptions.custom_exception_handler",
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
 }
 
 SIMPLE_JWT = {
@@ -166,3 +171,6 @@ SIMPLE_JWT = {
 
     "AUTH_HEADER_TYPES": ("Bearer",),
 }
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"

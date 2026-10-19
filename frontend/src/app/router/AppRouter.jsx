@@ -6,6 +6,12 @@ import ProtectedRoute from '../../core/auth/ProtectedRoute'
 const DashboardPage = lazy(() => import('../../modules/dashboard/pages/DashboardPage'))
 const PlaceholderPage = lazy(() => import('../../components/common/PlaceholderPage'))
 const LoginPage = lazy(() => import('../../modules/auth/pages/LoginPage'))
+const PostsPage = lazy(() =>
+    import('../../modules/content/pages/PostsPage')
+)
+const PostFormPage = lazy(
+    () => import('../../modules/content/pages/PostFormPage'),
+)
 
 function ProtectedAdminLayout() {
   const location = useLocation()
@@ -36,7 +42,9 @@ export default function AppRouter() {
         <Route element={<ProtectedAdminLayout />}>
           <Route path="/" element={<DashboardPage />} />
 
-          <Route path="/content" element={<PlaceholderPage />} />
+          <Route path="/content" element={<PostsPage />} />
+          <Route path="/content/new" element={<PostFormPage />} />
+          <Route path="/content/:id/edit" element={<PostFormPage />} />
           <Route path="/categories" element={<PlaceholderPage />} />
           <Route path="/media" element={<PlaceholderPage />} />
 

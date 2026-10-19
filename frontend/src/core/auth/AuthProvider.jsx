@@ -10,10 +10,9 @@ import { authStorage } from './auth.storage'
 import { authApi } from '../../modules/auth/api/auth.api'
 import { usersApi } from '../../modules/users/api/users.api'
 
-
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const clearSession = useCallback(() => {
     authStorage.clearTokens()
@@ -55,7 +54,7 @@ export function AuthProvider({ children }) {
   }, [clearSession])
 
   const refreshUser = useCallback(async () => {
-    if (!authStorage.getAccessToken()) {
+    if (!authStorage.getAccessToken() && !authStorage.getRefreshToken()) {
       setUser(null)
       return null
     }
@@ -66,6 +65,41 @@ export function AuthProvider({ children }) {
   }, [])
 
   useEffect(() => {
+    let cancelled = false
+
+    async function restoreSession() {
+      try {
+        if (
+          !authStorage.getAccessToken() &&
+          !authStorage.getRefreshToken()
+        ) {
+          return
+        }
+
+        const currentUser = await usersApi.getMe()
+
+        if (!cancelled) {
+          setUser(currentUser)
+        }
+      } catch {
+        if (!cancelled) {
+          clearSession()
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false)
+        }
+      }
+    }
+
+    restoreSession()
+
+    return () => {
+      cancelled = true
+    }
+  }, [clearSession])
+
+  useEffect(() => {
     const handleExpiredSession = () => {
       clearSession()
     }
@@ -73,10 +107,7 @@ export function AuthProvider({ children }) {
     window.addEventListener('auth:expired', handleExpiredSession)
 
     return () => {
-      window.removeEventListener(
-        'auth:expired',
-        handleExpiredSession,
-      )
+      window.removeEventListener('auth:expired', handleExpiredSession)
     }
   }, [clearSession])
 
