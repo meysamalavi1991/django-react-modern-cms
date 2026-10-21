@@ -1,5 +1,4 @@
-
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import {
     createPost,
@@ -7,7 +6,7 @@ import {
     getPost,
     updatePost,
 } from '../api/content.api'
-import RichTextEditor from '../components/RichTextEditor'
+const RichTextEditor = lazy(() => import('../components/RichTextEditor'))
 import MediaPicker from '../../media/components/MediaPicker'
 
 function getList(payload) {
@@ -339,12 +338,20 @@ export default function PostFormPage() {
 
                                 <div className="mb-2">
                                     <label className="form-label">متن کامل مطلب</label>
-                                    <RichTextEditor
-                                        value={form.body}
-                                        onChange={(body) =>
-                                            setForm((current) => ({ ...current, body }))
+                                    <Suspense
+                                        fallback={
+                                            <div className="text-muted py-3" dir="rtl">
+                                                در حال بارگذاری ویرایشگر...
+                                            </div>
                                         }
-                                    />
+                                    >
+                                        <RichTextEditor
+                                            value={form.body}
+                                            onChange={(body) =>
+                                                setForm((current) => ({ ...current, body }))
+                                            }
+                                        />
+                                    </Suspense>
                                     {fieldErrors.body && (
                                         <div className="text-danger small mt-2">
                                             {fieldErrors.body}

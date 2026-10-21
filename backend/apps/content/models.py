@@ -22,7 +22,7 @@ def generate_unique_slug(instance, value, model_class):
 
 class Category(models.Model):
     name = models.CharField(max_length=150)
-    slug = models.SlugField(max_length=180, unique=True, blank=True)
+    slug = models.SlugField(max_length=180, unique=True, blank=True, allow_unicode=True)
     description = models.TextField(blank=True)
 
     parent = models.ForeignKey(
@@ -90,7 +90,7 @@ class Post(models.Model):
         ARCHIVED = "archived", "Archived"
 
     title = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=280, unique=True, blank=True)
+    slug = models.SlugField(max_length=280, unique=True, blank=True, allow_unicode=True)
     excerpt = models.TextField(blank=True)
     body = models.TextField(blank=True)
 

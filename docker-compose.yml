@@ -53,6 +53,7 @@ services:
 
     volumes:
       - ./backend:/app
+      - media_data:/app/media
 
     ports:
       - "${BACKEND_PORT}:8000"
@@ -99,3 +100,5 @@ volumes:
   pgadmin_data:
 
   frontend_node_modules:
+
+  media_data:

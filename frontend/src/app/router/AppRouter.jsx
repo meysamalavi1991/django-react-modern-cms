@@ -12,6 +12,9 @@ const PostsPage = lazy(() =>
 const PostFormPage = lazy(
     () => import('../../modules/content/pages/PostFormPage'),
 )
+const CategoriesPage = lazy(
+    () => import('../../modules/content/pages/CategoriesPage'),
+)
 
 function ProtectedAdminLayout() {
   const location = useLocation()
@@ -45,7 +48,7 @@ export default function AppRouter() {
           <Route path="/content" element={<PostsPage />} />
           <Route path="/content/new" element={<PostFormPage />} />
           <Route path="/content/:id/edit" element={<PostFormPage />} />
-          <Route path="/categories" element={<PlaceholderPage />} />
+          <Route path="/categories" element={<CategoriesPage />} />
           <Route path="/media" element={<PlaceholderPage />} />
 
           <Route path="/users" element={<PlaceholderPage />} />
