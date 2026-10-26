@@ -37,3 +37,25 @@ export const updateCategory = (id, data) =>
 
 export const deleteCategory = (id) =>
     api.delete(`/content/categories/${id}/`)
+
+
+
+// Media
+export const getMediaFiles = (params = {}) =>
+    api.get('/media/', { params })
+
+export const getMediaFile = (id) =>
+    api.get(`/media/${id}/`)
+
+export const uploadMediaFile = (data) =>
+    api.post('/media/', data, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    })
+
+export const updateMediaFile = (id, data) =>
+    api.patch(`/media/${id}/`, data)
+
+export const deleteMediaFile = (id) =>
+    api.delete(`/media/${id}/`)

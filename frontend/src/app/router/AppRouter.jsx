@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
 import AdminLayout from '../../layouts/AdminLayout'
 import ProtectedRoute from '../../core/auth/ProtectedRoute'
+import MediaPage from '../../modules/content/pages/MediaPage'
 
 const DashboardPage = lazy(() => import('../../modules/dashboard/pages/DashboardPage'))
 const PlaceholderPage = lazy(() => import('../../components/common/PlaceholderPage'))
@@ -49,7 +50,7 @@ export default function AppRouter() {
           <Route path="/content/new" element={<PostFormPage />} />
           <Route path="/content/:id/edit" element={<PostFormPage />} />
           <Route path="/categories" element={<CategoriesPage />} />
-          <Route path="/media" element={<PlaceholderPage />} />
+          <Route path="/media" element={<MediaPage />} />
 
           <Route path="/users" element={<PlaceholderPage />} />
           <Route path="/users/details" element={<PlaceholderPage />} />
