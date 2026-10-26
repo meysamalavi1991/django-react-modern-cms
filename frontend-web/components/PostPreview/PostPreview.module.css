@@ -1,0 +1,68 @@
+.PostPreviewContainer {
+  cursor: pointer;
+  border-radius: 2rem;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.PostPreviewContainer:hover {
+  background-color: var(--primary-100);
+}
+
+.ImageWrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+}
+
+.Image {
+  border-radius: 2rem;
+}
+
+.ArticleTextInfo {
+  display: flex;
+  flex-direction: column;
+  margin: 1rem;
+  gap: 0.5rem;
+}
+
+.Topics {
+  display: flex;
+  gap: 1rem;
+  font-weight: 500;
+}
+
+.Topic {
+  color: var(--primary-600);
+}
+
+.Topic:hover {
+  color: var(--primary);
+}
+
+.Title {
+  font-weight: 600;
+  font-size: 1.5rem;
+  font-family: "Vazirmatn", sans-serif;
+}
+
+.Date {
+  color: var(--primary-600);
+  font-weight: 500;
+}
+
+.ImagePlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--primary-100);
+  color: var(--primary-600);
+  font-family: "Vazirmatn", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
