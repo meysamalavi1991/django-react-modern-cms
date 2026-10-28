@@ -1,70 +1,99 @@
-import fs from "fs";
-import Markdown from "react-markdown";
-import matter from "gray-matter";
-// import getPostMetadata from "@/lib/getPostMetadata";
+import type { Metadata } from "next";
 import Image from "next/image";
-import styles from "./Article.module.css";
-import MarkdownWrapper from "@/components/markdown-wrapper/MarkdownWrapper";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 import { format, parseISO } from "date-fns";
-import { allPosts } from "contentlayer/generated";
+import DOMPurify from "isomorphic-dompurify";
 
-export const generateStaticParams = async () =>
-  allPosts.map((post) => ({ slug: post._raw.flattenedPath }));
+import { getPublicPostBySlug } from "@/lib/publicApi";
+import styles from "./Article.module.css";
 
-export const generateMetadata = ({ params }: { params: { slug: string } }) => {
-  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug);
-  if (!post) return { title: "Post not found" };
-  return { title: post.title };
-};
-
-function PostPage({ params }: { params: { slug: string } }) {
-  const post = allPosts.find((post) => post._raw.flattenedPath === params.slug);
-  if (!post)
-    return (
-      <div className={styles.ErrorMessage}>
-        <h1>Page not found</h1>
-        <p>
-          Let&apos;s go to the <Link href="/">homepage</Link> instead.
-        </p>
-      </div>
-    );
-  return (
-    <div className={styles.Article}>
-      <div className={styles.ArticleTopics}>
-        {post.topics.map((category: string) => {
-          return (
-            <Link
-              href={`topic/${category}`}
-              key={category}
-              className={styles.ArticleTopic}
-              style={{ textDecoration: "inherit" }}
-            >
-              {category}
-            </Link>
-          );
-        })}
-      </div>
-      <h1 className={styles.ArticleTitle}>{post.title}</h1>
-      <div className={styles.ArticleSubtitle}>{post.subtitle}</div>
-      <Image
-        src={post.featured_image}
-        alt=""
-        width={800}
-        height={480}
-        priority
-      />
-      <div className={styles.Byline}>
-        {post.author} /{" "}
-        <time dateTime={post.date}>
-          {format(parseISO(post.date), "LLLL d, yyyy")}
-        </time>
-      </div>
-      <div className={styles.ArticleBody}>
-        <MarkdownWrapper>{post.body.raw}</MarkdownWrapper>
-      </div>
-    </div>
-  );
+interface PostPageProps {
+    params: {
+        slug: string;
+    };
 }
 
-export default PostPage;
+export async function generateMetadata({
+                                           params,
+                                       }: PostPageProps): Promise<Metadata> {
+    const post = await getPublicPostBySlug(params.slug);
+
+    if (!post) {
+        return {
+            title: "مقاله پیدا نشد",
+        };
+    }
+
+    return {
+        title: post.meta_title || post.title,
+        description: post.meta_description || post.excerpt || undefined,
+    };
+}
+
+export default async function PostPage({ params }: PostPageProps) {
+    const post = await getPublicPostBySlug(params.slug);
+
+    if (!post) {
+        notFound();
+    }
+
+    const safeBody = DOMPurify.sanitize(post.body || "");
+
+    const formattedDate = post.published_at
+        ? format(parseISO(post.published_at), "yyyy/MM/dd")
+        : "";
+
+    return (
+        <main className={styles.Article} dir="rtl">
+            {post.categories.length > 0 && (
+                <div className={styles.ArticleTopics}>
+                    {post.categories.map((category) => (
+                        <span className={styles.ArticleTopic} key={category.slug}>
+              {category.name}
+            </span>
+                    ))}
+                </div>
+            )}
+
+            <h1 className={styles.ArticleTitle}>{post.title}</h1>
+
+            {post.excerpt && (
+                <p className={styles.ArticleSubtitle}>{post.excerpt}</p>
+            )}
+
+            {post.featured_image_url && (
+                <div className={styles.FeaturedImage}>
+                    <Image
+                        src={post.featured_image_url}
+                        alt={post.title}
+                        width={1200}
+                        height={720}
+                        priority
+                        sizes="(max-width: 768px) 100vw, 900px"
+                        style={{
+                            width: "100%",
+                            height: "auto",
+                            objectFit: "cover",
+                        }}
+                    />
+                </div>
+            )}
+
+            {formattedDate && (
+                <div className={styles.Byline}>
+                    <time dateTime={post.published_at}>{formattedDate}</time>
+                </div>
+            )}
+
+            <article
+                className={styles.ArticleBody}
+                dangerouslySetInnerHTML={{ __html: safeBody }}
+            />
+
+            <div className={styles.BackToHome}>
+                <Link href="/">بازگشت به صفحه اصلی</Link>
+            </div>
+        </main>
+    );
+}

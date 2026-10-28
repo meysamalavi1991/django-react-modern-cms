@@ -1,0 +1,161 @@
+
+.Slideshow {
+    direction: rtl;
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #1f2937;
+}
+
+.Header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.Heading {
+    margin: 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.Controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.Controls button {
+    width: 36px;
+    height: 36px;
+    border: 1px solid #d1d5db;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.Controls button:hover:not(:disabled) {
+    background: #f3f4f6;
+}
+
+.Controls button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.Counter {
+    color: #6b7280;
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+.PostGrid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 1rem;
+}
+
+.PostCard {
+    min-width: 0;
+}
+
+.PostLink {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.ImageWrapper {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: 8px;
+    background: #f3f4f6;
+}
+
+.ImagePlaceholder {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    color: #6b7280;
+    font-weight: 600;
+}
+
+.PostTitle {
+    margin: 0.75rem 0 0;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    font-weight: 600;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+}
+
+.PostLink:hover .PostTitle {
+    color: #2563eb;
+}
+
+@media (max-width: 900px) {
+    .PostGrid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .Slideshow {
+        padding: 0.875rem;
+    }
+
+    .PostGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.75rem;
+    }
+
+    .Heading {
+        font-size: 1.05rem;
+    }
+
+    .PostTitle {
+        font-size: 0.875rem;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .Slideshow {
+        background: #1f2937;
+        border-color: #374151;
+        color: #f9fafb;
+    }
+
+    .Controls button {
+        border-color: #4b5563;
+    }
+
+    .Controls button:hover:not(:disabled) {
+        background: #374151;
+    }
+
+    .Counter {
+        color: #d1d5db;
+    }
+
+    .ImageWrapper {
+        background: #374151;
+    }
+
+    .ImagePlaceholder {
+        color: #d1d5db;
+    }
+}

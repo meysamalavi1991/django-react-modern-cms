@@ -19,11 +19,18 @@ export interface PublicPost {
     categories: PublicCategory[];
 }
 
-interface PaginatedResponse<T> {
+export interface PaginatedResponse<T> {
     count: number;
     next: string | null;
     previous: string | null;
     results: T[]
+}
+
+export interface PublicPostFilters {
+    page?: number;
+    search?: string;
+    category?: string;
+    ordering?: string;
 }
 
 const httpConfig = {
@@ -47,15 +54,34 @@ async function fetchPublicAPI<T>(endpoint: string): Promise<T> {
     return await response.json() as Promise<T>;
 }
 
-export async function getPublicPosts(): Promise<PublicPost[]> {
-    const data = await fetchPublicAPI<PaginatedResponse<PublicPost>>("/posts/");
+export async function getPublicPosts({page = 1, search = "", category = "", ordering = "-published_at"}: PublicPostFilters = {}): Promise<PaginatedResponse<PublicPost>> {
+    const params = new URLSearchParams();
+
+    params.set("page", String(page));
+
+    const tSearch = search?.trim();
+    tSearch && params.set('search', tSearch);
+
+    const tCategory = category?.trim();
+    tCategory && params.set('category', tCategory);
+
+    const tOrdering = ordering?.trim();
+    tOrdering && params.set('ordering', tOrdering);
+
+    return await fetchPublicAPI<PaginatedResponse<PublicPost>>(`/posts/?${params.toString()}`);
+}
+
+export async function getPublicCategories(): Promise<PublicCategory[]> {
+    const data = await fetchPublicAPI<PaginatedResponse<PublicCategory>>(
+        "/categories/"
+    );
 
     return data.results;
 }
 
 export async function getPublicPostBySlug(slug: string): Promise<PublicPost | null> {
     try {
-        return await fetchPublicAPI<PublicPost>(`/posts/${encodeURIComponent(slug)}/`);
+        return await fetchPublicAPI<PublicPost>(`/posts/${slug}/`);
     } catch (error) {
         if (error instanceof Error && error.message.includes("404")) {
             return null;

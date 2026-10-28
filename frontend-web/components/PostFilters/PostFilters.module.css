@@ -1,0 +1,58 @@
+.Filters {
+    display: grid;
+    grid-template-columns: minmax(200px, 2fr) minmax(150px, 1fr) minmax(150px, 1fr) auto;
+    align-items: end;
+    gap: 1rem;
+    margin: 1.5rem 0 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--primary-100);
+    border-radius: 1rem;
+}
+
+.Field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.Field label {
+    font-weight: 600;
+}
+
+.Field input,
+.Field select {
+    width: 100%;
+    min-width: 0;
+    padding: 0.75rem;
+    border: 1px solid var(--primary-100);
+    border-radius: 0.5rem;
+    background: white;
+    color: #222;
+    font: inherit;
+}
+
+.Submit {
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 0.5rem;
+    background: var(--primary);
+    color: var(--secondary);
+    font: inherit;
+    cursor: pointer;
+}
+
+.Submit:hover {
+    opacity: 0.9;
+}
+
+@media (max-width: 900px) {
+    .Filters {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 560px) {
+    .Filters {
+        grid-template-columns: 1fr;
+    }
+}

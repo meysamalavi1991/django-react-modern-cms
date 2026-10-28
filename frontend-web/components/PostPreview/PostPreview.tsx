@@ -50,8 +50,8 @@ export default function PostPreview({post}: PostPreviewProps) {
                 <time className={styles.Date} dateTime={post.published_at}>{formattedDate}</time>
 
                 <Link href={`/${encodeURIComponent(post.slug)}`} onClick={e => e.stopPropagation()}
-                      aria-label={` مطالعه مقاله ${post.title}`}>
-                    ادامه مطلب1
+                      aria-label={` مطالعه مقاله ${post.title}`} className={styles.LnkMore}>
+                    ادامه مطلب
                 </Link>
             </div>
         </article>

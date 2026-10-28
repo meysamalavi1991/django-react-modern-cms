@@ -13,7 +13,7 @@ class PublicPostListView(generics.ListAPIView):
     permission_classes = [permissions.AllowAny]
 
     def get_queryset(self):
-        return (
+        queryset = (
             Post.objects
             .filter(
                 status=Post.Status.PUBLISHED,
@@ -22,8 +22,41 @@ class PublicPostListView(generics.ListAPIView):
             )
             .select_related("featured_image")
             .prefetch_related("categories")
-            .order_by("-published_at")
         )
+
+        search = self.request.query_params.get("search", "").strip()
+        if search:
+            from django.db.models import Q
+
+            queryset = queryset.filter(
+                Q(title__icontains=search)
+                | Q(excerpt__icontains=search)
+                | Q(body__icontains=search)
+            )
+
+        category_slug = self.request.query_params.get("category", "").strip()
+        if category_slug:
+            queryset = queryset.filter(
+                categories__slug=category_slug,
+                categories__is_active=True,
+            )
+
+        ordering = self.request.query_params.get(
+            "ordering",
+            "-published_at",
+        )
+
+        allowed_ordering = {
+            "published_at",
+            "-published_at",
+            "title",
+            "-title",
+        }
+
+        if ordering not in allowed_ordering:
+            ordering = "-published_at"
+
+        return queryset.order_by(ordering, "id").distinct()
 
 
 class PublicPostDetailView(generics.RetrieveAPIView):
