@@ -8,7 +8,7 @@ interface PostFiltersProps {
     ordering: string;
 }
 
-export default function PostFilters(props) {
+export default function PostFilters(props: any) {
     const {categories, search, category, ordering,}: PostFiltersProps = props;
 
     return (

@@ -85,7 +85,7 @@
   background-color: var(--primary-100);
   font-size: 1.15rem;
   color: var(--primary);
-  padding: 0 3rem;
+  padding: 0 3.4rem;
 }
 
 .NavSearchInput:focus {
@@ -108,7 +108,7 @@
 .StartingIcon {
   position: absolute;
   top: 50%;
-  left: 1rem;
+  left: 0.5rem;
   transform: translateY(-50%);
   color: var(--primary);
 }
@@ -116,14 +116,18 @@
 .TrailingIconWrapper {
   position: absolute;
   top: 50%;
-  right: 1rem;
+  right: 0.5rem;
   transform: translateY(-50%);
   color: var(--primary);
-  padding: 0.75rem;
+  padding: 0.6rem;
   cursor: pointer;
 }
 
 .TrailingIconWrapper:hover {
   background-color: var(--primary-300);
   border-radius: 0.75rem;
+}
+
+.TrailingIcon {
+  display: inherit;
 }

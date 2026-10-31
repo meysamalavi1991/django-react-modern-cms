@@ -1,11 +1,12 @@
 import React from "react";
 import type { Metadata } from "next";
-import "../styles/main.css";
 import Navbar from "@/components/navbar/Navbar";
 import NextTopLoader from "nextjs-toploader";
 import Footer from "@/components/footer/Footer";
 import { siteInfo } from "@/lib/data";
 import DesktopMenu from "@/components/desktop-menu/DesktopMenu";
+import "bootstrap/dist/css/bootstrap.rtl.min.css";
+import "../styles/main.css";
 
 export const metadata: Metadata = {
   title: siteInfo.title,

@@ -68,7 +68,7 @@ function Navbar() {
   function handleSearchSubmit(e: any) {
     e.preventDefault();
     const searchKeyword = e.target.searchKeyword.value;
-    router.push(`/search/${searchKeyword}`);
+    router.push(`/search?search=${searchKeyword}`);
     setSearchOpen(false);
   }
 
@@ -78,22 +78,16 @@ function Navbar() {
         {searchOpen ? (
           <div className={styles.NavSearchContainer}>
             <IconSearch className={styles.StartingIcon} />
-            <form
-              onSubmit={handleSearchSubmit}
-              className={styles.NavSearchForm}
-            >
+            <form onSubmit={handleSearchSubmit} className={styles.NavSearchForm}>
               <input
                 className={styles.NavSearchInput}
                 type="text"
                 name="searchKeyword"
-                placeholder="Search"
+                placeholder="جستجو..."
                 required
               />
             </form>
-            <div
-              onClick={handleSearchClick}
-              className={styles.TrailingIconWrapper}
-            >
+            <div onClick={handleSearchClick} className={styles.TrailingIconWrapper}>
               <IconX className={styles.TrailingIcon} />
             </div>
           </div>

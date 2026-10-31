@@ -1,3 +1,4 @@
+/*
 "use client";
 
 import { allPosts } from "@/.contentlayer/generated";
@@ -32,3 +33,4 @@ function Search() {
 }
 
 export default Search;
+*/

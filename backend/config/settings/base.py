@@ -157,7 +157,7 @@ REST_FRAMEWORK = {
     ),
     "EXCEPTION_HANDLER": "apps.core.exceptions.custom_exception_handler",
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 20,
+    "PAGE_SIZE": 18,
 }
 
 SIMPLE_JWT = {
